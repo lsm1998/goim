@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+// protoc -I=. --go_out=. user.proto
+package user;
+
+message User{
+  int64 id = 1;
+  int64 nickname = 2;
+  int64 username = 3;
+  int64 head_img = 4;
+}
+
+message UserListRequest{
+  // 分页相关
+  uint32 page = 1;
+  uint32 size = 2;
+}
+
+message UserListResponse{
+  uint32 total = 1;
+  repeated User list = 2;
+}
