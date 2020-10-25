@@ -16,6 +16,9 @@ func reactWork(bytes []byte, c gnet.Conn) {
 	}
 	rsp := message.MessageResponse{}
 	switch {
+	// Pong
+	case req.Message.Cmd == message.RequestType_Pong:
+		route.SetPongTime(req.Message.FormId)
 	// 握手
 	case req.Message.Cmd == message.RequestType_Handshake:
 		if id := handshake(req.Message.Body); id > 0 {
@@ -38,7 +41,7 @@ func reactWork(bytes []byte, c gnet.Conn) {
 	case req.Message.Cmd == message.RequestType_GroupMessage:
 	// 私聊消息
 	case req.Message.Cmd == message.RequestType_PrivateMessage:
-		conn := route.Get(req.Message.ToId)
+		conn, _ := route.Get(req.Message.ToId)
 		if conn == nil {
 			// 不在线
 			rsp.Code = 201
@@ -55,8 +58,8 @@ func reactWork(bytes []byte, c gnet.Conn) {
 }
 
 func closeWork(conn gnet.Conn) {
-	route.ForEach(func(id int64, c gnet.Conn) bool {
-		if conn == c {
+	route.ForEach(func(id int64, c route.Connect) bool {
+		if conn == c.Conn {
 			route.Remove(id)
 			return false
 		}

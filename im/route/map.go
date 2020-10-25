@@ -1,8 +1,14 @@
 package route
 
 import (
+	"github.com/panjf2000/gnet"
 	"utils"
 )
+
+type Connect struct {
+	Conn     gnet.Conn
+	PongTime int64
+}
 
 // userMap 在线列表
 var userMap = new(utils.SyncMap)

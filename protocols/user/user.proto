@@ -5,9 +5,9 @@ package user;
 
 message User{
   int64 id = 1;
-  int64 nickname = 2;
-  int64 username = 3;
-  int64 head_img = 4;
+  string nickname = 2;
+  string username = 3;
+  string head_img = 4;
 }
 
 message UserListRequest{
