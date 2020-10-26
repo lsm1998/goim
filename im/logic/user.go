@@ -1,5 +1,5 @@
 package logic
 
-func Login(token string)  {
+func Login(token string) {
 
 }

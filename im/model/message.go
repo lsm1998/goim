@@ -2,6 +2,17 @@ package model
 
 import "utils"
 
+type MessageStatus int32
+
+const (
+	// 未读
+	MsgUnread MessageStatus = iota
+	// 已读
+	MsgRead
+	// 删除
+	MsgDelete
+)
+
 type Message struct {
 	utils.Model
 	Cmd    uint   `json:"cmd" gorm:"cmd"`
@@ -12,16 +23,16 @@ type Message struct {
 	AesKey string `json:"aes_key" gorm:"aes_key"`
 }
 
-func (Message) TableName() string {
+func (*Message) TableName() string {
 	return "t_message"
 }
 
 type MessageRead struct {
 	utils.Model
-	MessageId int64 `json:"message_id" gorm:"message_id"`
-	Status    int32 `json:"status" gorm:"status"`
+	MessageId int64         `json:"message_id" gorm:"message_id"`
+	Status    MessageStatus `json:"status" gorm:"status"`
 }
 
-func (MessageRead) TableName() string {
+func (*MessageRead) TableName() string {
 	return "t_message_read"
 }

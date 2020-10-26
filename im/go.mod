@@ -15,7 +15,7 @@ require (
 )
 
 replace (
-	utils => ../utils
 	google.golang.org/grpc => google.golang.org/grpc v1.29.0
 	protocols => ../protocols
+	utils => ../utils
 )

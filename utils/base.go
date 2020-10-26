@@ -13,3 +13,7 @@ type PageInfo struct {
 	Page uint32 `json:"page"`
 	Size uint32 `json:"size"`
 }
+
+func (p *PageInfo) Offset() uint32 {
+	return (p.Page - 1) * p.Size
+}

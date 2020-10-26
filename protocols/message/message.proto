@@ -43,7 +43,7 @@ message MessageResponse{
 
 message MessageListRequest{
   // 用户ID
-  int64 user_id = 1;
+  Message find = 1;
   // 类型，0全部，1未读，1已读
   uint32 type = 2;
   // 分页相关

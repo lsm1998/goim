@@ -22,7 +22,7 @@ func addRegistryPlugin(s *server.Server) {
 	r := &serverplugin.ConsulRegisterPlugin{
 		ServiceAddress: fmt.Sprintf(`tcp@:%d`, 11000),
 		ConsulServers:  []string{"47.103.211.234:8500"},
-		BasePath:       "/im",
+		BasePath:       "IM",
 		Metrics:        metrics.NewRegistry(),
 		UpdateInterval: time.Minute,
 	}

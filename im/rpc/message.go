@@ -6,6 +6,8 @@ import (
 )
 
 func (i *ImRpcServer) MessageList(ctx context.Context, req *message.MessageListRequest, rsp *message.MessageListResponse) error {
+	rsp.Total = 0
+
 	return nil
 }
 

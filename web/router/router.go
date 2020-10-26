@@ -29,15 +29,15 @@ func routerInit(router *gin.Engine) {
 	}
 
 	// 授权
-	router.Use(Authorize())
+	// router.Use(Authorize())
 
 	//imS := router.Group("/im")
 	//{
 	//	imS.GET("/send", sendMessage)
 	//}
 	//
-	//userS := router.Group("/user")
-	//{
-	//	userS.GET("/info/:id", userInfo)
-	//}
+	userS := router.Group("/user")
+	{
+		userS.GET("/info/:id", logic.UserInfo)
+	}
 }

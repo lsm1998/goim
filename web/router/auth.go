@@ -26,6 +26,7 @@ func Authorize() gin.HandlerFunc {
 		}
 		// 验证通过，会继续访问下一个中间件
 		c.Set("roles", loginClaims.Role)
+		c.Set("uid", loginClaims.Uid)
 		c.Next()
 		return
 	FAIT:
@@ -33,4 +34,8 @@ func Authorize() gin.HandlerFunc {
 		c.Abort()
 		c.JSON(http.StatusUnauthorized, gin.H{"message": errMsg})
 	}
+}
+
+func CheckPermission() gin.HandlerFunc {
+	return nil
 }
