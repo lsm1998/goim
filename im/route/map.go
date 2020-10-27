@@ -8,6 +8,7 @@ import (
 type Connect struct {
 	Conn     gnet.Conn
 	PongTime int64
+	AesKey   string
 }
 
 // userMap 在线列表

@@ -12,7 +12,7 @@ func StartHttpServer(router *gin.Engine) {
 
 	})
 	routerInit(router)
-	_ = router.Run(fmt.Sprintf(":%d", 8080))
+	_ = router.Run(fmt.Sprintf(":%d", 8888))
 }
 
 func routerInit(router *gin.Engine) {
@@ -28,8 +28,8 @@ func routerInit(router *gin.Engine) {
 		baseS.GET("/info", logic.Info)
 	}
 
-	// 授权
-	// router.Use(Authorize())
+	// 鉴权
+	router.Use(CheckPermission())
 
 	//imS := router.Group("/im")
 	//{

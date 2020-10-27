@@ -1,9 +1,9 @@
 package imghand
 
 import (
+	"image"
 	"log"
 	"regexp"
-	"image"
 )
 
 var regexpUrlParse *regexp.Regexp

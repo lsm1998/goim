@@ -218,7 +218,6 @@ func (this Controller) Post(w http.ResponseWriter, r *http.Request) {
 
 		}
 
-
 		if err != nil {
 			res.Code = StatusImgEncode
 			res.Msg = StatusText(StatusImgEncode)
@@ -228,7 +227,6 @@ func (this Controller) Post(w http.ResponseWriter, r *http.Request) {
 		}
 
 	}
-
 
 	res.Success = true
 	res.Code = StatusOK

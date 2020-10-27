@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/golang/protobuf/proto"
 	"github.com/panjf2000/gnet"
+	"im/logic"
 	"im/route"
 	"protocols/message"
 )
@@ -22,7 +23,8 @@ func reactWork(bytes []byte, c gnet.Conn) {
 	// 握手
 	case req.Message.Cmd == message.RequestType_Handshake:
 		if id := handshake(req.Message.Body); id > 0 {
-			route.Join(id, c)
+			aseKey, _ := logic.GetAndSaveAesKey(id)
+			route.Join(id, c, aseKey)
 			rsp.Code = 200
 			rsp.Message = "abcdef"
 		} else {
@@ -41,7 +43,7 @@ func reactWork(bytes []byte, c gnet.Conn) {
 	case req.Message.Cmd == message.RequestType_GroupMessage:
 	// 私聊消息
 	case req.Message.Cmd == message.RequestType_PrivateMessage:
-		conn, _ := route.Get(req.Message.ToId)
+		conn, _, _ := route.Get(req.Message.ToId)
 		if conn == nil {
 			// 不在线
 			rsp.Code = 201

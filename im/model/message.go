@@ -1,6 +1,9 @@
 package model
 
-import "utils"
+import (
+	"time"
+	"utils"
+)
 
 type MessageStatus int32
 
@@ -15,12 +18,12 @@ const (
 
 type Message struct {
 	utils.Model
-	Cmd    uint   `json:"cmd" gorm:"cmd"`
-	FormId int64  `json:"form_id" gorm:"form_id"`
-	ToId   int64  `json:"to_id" gorm:"to_id"`
-	Body   []byte `json:"body" gorm:"body"`
-	Length int32  `json:"length" gorm:"length"`
-	AesKey string `json:"aes_key" gorm:"aes_key"`
+	Cmd      uint      `json:"cmd" gorm:"cmd"`
+	FormId   int64     `json:"form_id" gorm:"form_id"`
+	ToId     int64     `json:"to_id" gorm:"to_id"`
+	Body     []byte    `json:"body" gorm:"body"`
+	AesKey   string    `json:"aes_key" gorm:"aes_key"`
+	UserTime time.Time `json:"user_time" gorm:"user_time"`
 }
 
 func (*Message) TableName() string {

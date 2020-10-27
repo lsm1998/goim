@@ -7,7 +7,6 @@ import (
 
 // 注册访问路由
 func InitRoute() {
-
 	// 路由处理绑定
 	server.Handle("/", uphand.Controller{})
 
@@ -16,6 +15,7 @@ func InitRoute() {
 
 	// 测试上传
 	server.HandleFunc("/test", uphand.Test)
+
 	// 获取状态码
 	server.HandleFunc("/statuscode", uphand.StatusCode)
 }

@@ -9,6 +9,7 @@ type User struct {
 	Password string `json:"password" gorm:"password"`
 	Salt     string `json:"salt" gorm:"salt"`
 	HeadImg  string `json:"head_img" gorm:"head_img"`
+	AesKey   string `json:"aes_key" gorm:"aes_key"`
 }
 
 func (User) TableName() string {

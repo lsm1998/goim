@@ -7,18 +7,18 @@ import (
 )
 
 // Join 加入一个连接
-func Join(id int64, c gnet.Conn) {
-	userMap.Store(id, &Connect{Conn: c, PongTime: time.Now().Unix()})
+func Join(id int64, c gnet.Conn, aesKey string) {
+	userMap.Store(id, &Connect{Conn: c, PongTime: time.Now().Unix(), AesKey: aesKey})
 	fmt.Println("用户加入连接，Id=", id, "，当前在线人数=", Size())
 }
 
 // Get 获取一个连接
-func Get(id int64) (gnet.Conn, int64) {
+func Get(id int64) (gnet.Conn, int64, string) {
 	val, ok := userMap.Load(id)
 	if !ok {
-		return nil, 0
+		return nil, 0, ""
 	}
-	return val.(Connect).Conn, val.(Connect).PongTime
+	return val.(Connect).Conn, val.(Connect).PongTime, val.(Connect).AesKey
 }
 
 // Remove 删除一个连接
