@@ -1,18 +1,22 @@
 package router
 
 import (
+	"api-gateway/logic"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"web/logic"
 )
 
 func StartHttpServer(router *gin.Engine) {
-	// favicon.ico
+	favicon(router)
+	routerInit(router)
+	_ = router.Run(fmt.Sprintf(":%d", 8888))
+}
+
+// favicon.ico
+func favicon(router *gin.Engine) {
 	router.GET("favicon.ico", func(context *gin.Context) {
 
 	})
-	routerInit(router)
-	_ = router.Run(fmt.Sprintf(":%d", 8888))
 }
 
 func routerInit(router *gin.Engine) {

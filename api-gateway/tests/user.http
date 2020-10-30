@@ -1,0 +1,11 @@
+GET http://localhost:8080/api/item?id=99
+Accept: application/json
+
+{
+  "id": {{$uuid}},
+  "price": {{$randomInt}},
+  "ts": {{$timestamp}},
+  "value": "content"
+}
+
+###

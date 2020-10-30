@@ -18,7 +18,7 @@ func Get(id int64) (gnet.Conn, int64, string) {
 	if !ok {
 		return nil, 0, ""
 	}
-	return val.(Connect).Conn, val.(Connect).PongTime, val.(Connect).AesKey
+	return val.(*Connect).Conn, val.(*Connect).PongTime, val.(*Connect).AesKey
 }
 
 // Remove 删除一个连接
@@ -41,23 +41,23 @@ func KeyList() []int64 {
 func ConnList() []gnet.Conn {
 	list := make([]gnet.Conn, 0, 10)
 	userMap.Range(func(key, value interface{}) bool {
-		list = append(list, value.(Connect).Conn)
+		list = append(list, value.(*Connect).Conn)
 		return true
 	})
 	return list
 }
 
 // ForEach 遍历Map
-func ForEach(fu func(id int64, c Connect) bool) {
+func ForEach(fu func(id int64, c *Connect) bool) {
 	userMap.Range(func(key, value interface{}) bool {
-		return fu(key.(int64), value.(Connect))
+		return fu(key.(int64), value.(*Connect))
 	})
 }
 
 // Size 在线人数
 func Size() int32 {
 	var size int32
-	ForEach(func(id int64, c Connect) bool {
+	ForEach(func(id int64, c *Connect) bool {
 		size++
 		return true
 	})
@@ -68,7 +68,7 @@ func Size() int32 {
 func SetPongTime(id int64) {
 	userMap.Range(func(key, value interface{}) bool {
 		if key.(int64) == key {
-			temp := value.(Connect)
+			temp := value.(*Connect)
 			temp.PongTime = time.Now().Unix()
 			return false
 		}

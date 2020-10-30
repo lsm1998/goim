@@ -15,52 +15,46 @@ func reactWork(bytes []byte, c gnet.Conn) {
 		fmt.Println("解码错误")
 		return
 	}
-	rsp := message.MessageResponse{}
-	switch {
-	// Pong
-	case req.Message.Cmd == message.RequestType_Pong:
-		route.SetPongTime(req.Message.FormId)
-	// 握手
-	case req.Message.Cmd == message.RequestType_Handshake:
-		if id := handshake(req.Message.Body); id > 0 {
-			aseKey, _ := logic.GetAndSaveAesKey(id)
-			route.Join(id, c, aseKey)
-			rsp.Code = 200
-			rsp.Message = "abcdef"
-		} else {
-			rsp.Code = 202
-		}
-		if data, err := proto.Marshal(&rsp); err == nil {
-			_ = c.AsyncWrite(data)
-		}
-	// 上线
-	case req.Message.Cmd == message.RequestType_Online:
-	// 下线
-	case req.Message.Cmd == message.RequestType_Offline:
-	// 文件传输
-	case req.Message.Cmd == message.RequestType_File:
-	// 群发消息
-	case req.Message.Cmd == message.RequestType_GroupMessage:
-	// 私聊消息
-	case req.Message.Cmd == message.RequestType_PrivateMessage:
-		conn, _, _ := route.Get(req.Message.ToId)
-		if conn == nil {
+	switch pack := req.Pack.(type) {
+	case *message.MessageRequest_Message:
+		switch pack.Message.Cmd {
+		case message.MessageType_Pong: // pong
+			route.SetPongTime(pack.Message.FormId)
+		case message.MessageType_Handshake: // 握手
+			var rsp message.Reply
+			if id := handshakeReq(pack.Message.Body); id > 0 {
+				aseKey, _ := logic.GetAndSaveAesKey(id)
+				route.Join(id, c, aseKey)
+				rsp.Code = 200
+				rsp.Body = []byte(aseKey)
+			} else {
+				rsp.Code = 201
+			}
+			_ = replyMessage(c, &rsp)
+		case message.MessageType_Online: // 上线
+		case message.MessageType_Offline: // 下线
+		case message.MessageType_File: // 文件传输
+		case message.MessageType_GroupMessage: // 群发消息
+		case message.MessageType_PrivateMessage: // 私聊消息
+			var rsp message.Reply
+			conn, _, _ := route.Get(pack.Message.ToId)
 			// 不在线
-			rsp.Code = 201
-		} else {
-			_ = conn.AsyncWrite(bytes)
-			rsp.Code = 200
+			if conn == nil {
+				rsp.Code = 201
+			} else {
+				rsp.Code = 200
+				_ = conn.AsyncWrite(bytes)
+			}
+			_ = replyMessage(c, &rsp)
+		case message.MessageType_SystemBroadcast: // 系统广播
 		}
-		if data, err := proto.Marshal(&rsp); err == nil {
-			_ = c.AsyncWrite(data)
-		}
-	// 系统广播
-	case req.Message.Cmd == message.RequestType_SystemBroadcast:
+	case *message.MessageRequest_Response:
+		fmt.Println(pack.Response.Body)
 	}
 }
 
 func closeWork(conn gnet.Conn) {
-	route.ForEach(func(id int64, c route.Connect) bool {
+	route.ForEach(func(id int64, c *route.Connect) bool {
 		if conn == c.Conn {
 			route.Remove(id)
 			return false

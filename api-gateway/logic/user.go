@@ -1,8 +1,8 @@
 package logic
 
 import (
+	"api-gateway/client"
 	"github.com/gin-gonic/gin"
-	"web/client"
 )
 
 func UserInfo(c *gin.Context) {

@@ -30,5 +30,6 @@ func GetAndSaveAesKey(uid int64) (string, error) {
 	if aesKey, err = uuid.GenerateUUID(); err != nil {
 		return "", err
 	}
-	return "", config.DB.Model((*model.User)(nil)).Where("id=?", uid).Update("aes_key", aesKey).Error
+	aesKey = aesKey[0:8]
+	return aesKey, config.DB.Model(&model.User{}).Where("id=?", uid).Update("aes_key", aesKey).Error
 }

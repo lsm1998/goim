@@ -4,6 +4,11 @@ syntax = "proto3";
 package message;
 
 enum RequestType {
+  Request = 0;
+  Response = 1;
+}
+
+enum MessageType {
   // 心跳
   Pong = 0;
   // 握手
@@ -24,7 +29,7 @@ enum RequestType {
 
 message Message{
   int64 id = 1;
-  RequestType cmd = 2;
+  MessageType cmd = 2;
   int64 form_id = 3;
   int64 to_id = 4;
   int64 create_time = 5;
@@ -33,25 +38,15 @@ message Message{
 }
 
 message MessageRequest{
-  Message message = 1;
+  RequestType type = 1;
+  oneof pack {
+    Message message = 2;
+    Reply response = 3;
+  }
 }
 
-message MessageResponse{
+message Reply{
   int32 code = 1;
-  string message = 2;
-}
-
-message MessageListRequest{
-  // 用户ID
-  Message find = 1;
-  // 类型，0全部，1未读，1已读
-  uint32 type = 2;
-  // 分页相关
-  uint32 page = 3;
-  uint32 size = 4;
-}
-
-message MessageListResponse{
-  uint32 total = 1;
-  repeated Message list = 2;
+  int64 msg_id = 2;
+  bytes body = 3;
 }

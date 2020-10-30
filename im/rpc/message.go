@@ -6,18 +6,24 @@ import (
 	"protocols/message"
 )
 
-func (i *ImRpcServer) MessageList(ctx context.Context, req *message.MessageListRequest, rsp *message.MessageListResponse) error {
-	rsp.Total = 0
-	return nil
-}
-
-func (i *ImRpcServer) SendMessage(ctx context.Context, req *message.MessageRequest, rsp *message.MessageResponse) error {
-	// 1.消息入库
-	if err := logic.SaveMessage(req.Message); err != nil {
-		rsp.Code = 505
-		rsp.Message = "消息保存失败"
-		return nil
+func (i *ImRpcServer) SendMessage(ctx context.Context, req *message.MessageRequest, rsp *message.MessageRequest) error {
+	rsp.Type = message.RequestType_Response
+	reply := new(message.Reply)
+	rsp.Pack = &message.MessageRequest_Response{
+		Response: reply,
 	}
-	rsp.Code = 200
+	if req.Type == message.RequestType_Request {
+		switch pack := req.Pack.(type) {
+		case *message.MessageRequest_Message:
+			// 1.消息入库
+			if err := logic.SaveMessage(pack.Message); err != nil {
+				reply.Code = 505
+				reply.Body = []byte("消息保存失败")
+				return nil
+			}
+		case *message.MessageRequest_Response:
+
+		}
+	}
 	return nil
 }

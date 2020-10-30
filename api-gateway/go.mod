@@ -1,4 +1,4 @@
-module web
+module "api-gateway"
 
 go 1.15
 

@@ -12,14 +12,7 @@ import (
 )
 
 func TestDB(t *testing.T) {
-	//bean := &model.Message{}
-	//
-	//if err := config.DB.CreateTable(bean).Error; err != nil {
-	//	println(err.Error())
-	//}
-
-	list, err := dao.QueryGroupList()
-	fmt.Println(list, err)
+	config.DB.Model(&model.User{}).Where("id=?", 1).Update("aes_key", "1233")
 }
 
 func TestAddTable(t *testing.T) {

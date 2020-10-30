@@ -1,9 +1,9 @@
 package main
 
 import (
+	"api-gateway/client"
+	"api-gateway/router"
 	"github.com/gin-gonic/gin"
-	"web/client"
-	"web/router"
 )
 
 func main() {

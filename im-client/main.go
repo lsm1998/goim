@@ -34,9 +34,14 @@ func newClient(address string) {
 				break
 			}
 			if le > 0 {
-				var rsp message.MessageResponse
+				var rsp message.MessageRequest
 				_ = proto.Unmarshal(temp[0:le], &rsp)
-				fmt.Println("收到回复=>", rsp)
+				switch pack := rsp.Pack.(type) {
+				case *message.MessageRequest_Response:
+					fmt.Println("收到回复=", string(pack.Response.Body))
+				case *message.MessageRequest_Message:
+					fmt.Println("收到消息=", string(pack.Message.Body))
+				}
 			}
 		}
 	}()
@@ -47,20 +52,25 @@ func newClient(address string) {
 		if input, err := inputReader.ReadString('\n'); err != nil {
 			panic(err)
 		} else {
-			split := strings.Split(strings.TrimSuffix(input, "\n"), "-")
+			split := strings.Split(strings.TrimSuffix(input, "\r\n"), "-")
 			if len(split) == 3 {
 				var req message.MessageRequest
-				req.Message = new(message.Message)
+				req.Type = message.RequestType_Request
+				msg := new(message.Message)
 				if split[0] == "握手" || split[0] == "ws" {
-					req.Message.Cmd = message.RequestType_Handshake
-					req.Message.Body = []byte(split[2])
+					msg.Cmd = message.MessageType_Handshake
+					fmt.Println(split[2])
+					msg.Body = []byte(split[2])
 				} else if split[0] == "私信" || split[0] == "sx" {
-					req.Message.Cmd = message.RequestType_PrivateMessage
-					req.Message.ToId, err = strconv.ParseInt(split[1], 10, 64)
-					req.Message.Body = []byte(split[2])
+					msg.Cmd = message.MessageType_PrivateMessage
+					msg.ToId, err = strconv.ParseInt(split[1], 10, 64)
+					msg.Body = []byte(split[2])
 				} else {
 					log.Println("不能识别对应的标识")
 					continue
+				}
+				req.Pack = &message.MessageRequest_Message{
+					Message: msg,
 				}
 				bytes, _ := proto.Marshal(&req)
 				conn.Write(bytes)
