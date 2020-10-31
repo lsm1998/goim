@@ -2,13 +2,49 @@ package logic
 
 import (
 	"api-gateway/client"
+	"context"
 	"github.com/gin-gonic/gin"
+	"protocols/user"
 )
 
+func Login(c *gin.Context) {
+	var req user.LoginRequest
+	var rsp user.LoginResponse
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "参数错误",
+		})
+		return
+	}
+	err := client.UserClient.Call(context.Background(), "Login", &req, &rsp)
+	if err != nil {
+		c.JSON(200, gin.H{
+			"code": 500,
+			"msg":  "服务调用失败",
+		})
+		return
+	}
+	c.JSON(200, rsp)
+}
+
 func UserInfo(c *gin.Context) {
-	rsp := gin.H{
-		"version": 0.1,
-		"info":    "hello word!",
+	var req user.UserInfoRequest
+	var rsp user.UserInfoResponse
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "参数错误",
+		})
+		return
+	}
+	err := client.UserClient.Call(context.Background(), "UserInfo", &req, &rsp)
+	if err != nil {
+		c.JSON(200, gin.H{
+			"code": 500,
+			"msg":  "服务调用失败",
+		})
+		return
 	}
 	c.JSON(200, rsp)
 }

@@ -1,4 +1,4 @@
-GET http://localhost:8080/api/item?id=99
+GET http://localhost:8888/base/info?id=99
 Accept: application/json
 
 {
@@ -9,3 +9,19 @@ Accept: application/json
 }
 
 ###
+
+POST http://localhost:8888/base/login
+Accept: application/json
+
+{
+  "username": "root",
+  "password": "123"
+}
+
+###
+
+GET http://localhost:8888/user/info?id=1
+Accept: application/json
+Content-Type: ontent-type: application/x-www-form-urlencoded; charset=UTF-8
+uid: 1
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOjEsIlJvbGUiOlsxLDIsM10sIkV4cGlyZVRpbWUiOjE2MDQxNjQwODV9.Vlj0F3k93UJnCPsoZWwPc6UvdSY-fvbb4aNzSyp7rVM

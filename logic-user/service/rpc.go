@@ -1,4 +1,4 @@
-package rpc
+package service
 
 import (
 	"fmt"
@@ -8,21 +8,21 @@ import (
 	"time"
 )
 
-type ImRpcServer int
+type UserRpcServer int
 
 func Init() {
 	server.UsePool = true
 	newServer := server.NewServer()
 	addRegistryPlugin(newServer)
-	_ = newServer.RegisterName("IM", new(ImRpcServer), "")
-	_ = newServer.Serve("tcp", fmt.Sprintf(`:%d`, 12000))
+	_ = newServer.RegisterName("USER", new(UserRpcServer), "")
+	_ = newServer.Serve("tcp", fmt.Sprintf(`:%d`, 11000))
 }
 
 func addRegistryPlugin(s *server.Server) {
 	r := &serverplugin.ConsulRegisterPlugin{
-		ServiceAddress: fmt.Sprintf(`tcp@:%d`, 12000),
+		ServiceAddress: fmt.Sprintf(`tcp@:%d`, 11000),
 		ConsulServers:  []string{"47.103.211.234:8500"},
-		BasePath:       "IM",
+		BasePath:       "USER",
 		Metrics:        metrics.NewRegistry(),
 		UpdateInterval: time.Minute,
 	}

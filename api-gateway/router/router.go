@@ -30,10 +30,11 @@ func routerInit(router *gin.Engine) {
 	baseS := router.Group("/base")
 	{
 		baseS.GET("/info", logic.Info)
+		baseS.POST("/login", logic.Login)
 	}
 
 	// 鉴权
-	router.Use(CheckPermission())
+	router.Use(Authorize(), CheckPermission())
 
 	//imS := router.Group("/im")
 	//{
@@ -42,6 +43,6 @@ func routerInit(router *gin.Engine) {
 	//
 	userS := router.Group("/user")
 	{
-		userS.GET("/info/:id", logic.UserInfo)
+		userS.GET("/info", logic.UserInfo)
 	}
 }

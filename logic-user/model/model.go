@@ -30,3 +30,17 @@ type Auth struct {
 func (Auth) TableName() string {
 	return "t_auth"
 }
+
+type User struct {
+	utils.Model
+	Nickname string `json:"nickname" gorm:"nickname"`
+	Username string `json:"username" gorm:"username"`
+	Password string `json:"password" gorm:"password"`
+	Salt     string `json:"salt" gorm:"salt"`
+	HeadImg  string `json:"head_img" gorm:"head_img"`
+	AesKey   string `json:"aes_key" gorm:"aes_key"`
+}
+
+func (User) TableName() string {
+	return "t_user"
+}

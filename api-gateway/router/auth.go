@@ -18,19 +18,19 @@ func Authorize() gin.HandlerFunc {
 		uid, err := strconv.ParseInt(uidStr, 10, 64)
 		if err != nil {
 			errMsg = "请求未包含有效用户ID"
-			goto FAIT
+			goto FAIL
 		}
 		loginClaims, err = utils.ValidToken(token, uid)
 		if err != nil {
 			errMsg = err.Error()
-			goto FAIT
+			goto FAIL
 		}
 		// 验证通过，会继续访问下一个中间件
 		c.Set("roles", loginClaims.Role)
 		c.Set("uid", loginClaims.Uid)
 		c.Next()
 		return
-	FAIT:
+	FAIL:
 		// 验证不通过，不再调用后续的函数处理
 		c.Abort()
 		c.JSON(http.StatusUnauthorized, gin.H{"message": errMsg})
