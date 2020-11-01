@@ -44,5 +44,7 @@ func routerInit(router *gin.Engine) {
 	userS := router.Group("/user")
 	{
 		userS.GET("/info", logic.UserInfo)
+		//
+		userS.GET("/friendsList", logic.FriendsList)
 	}
 }

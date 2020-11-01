@@ -49,6 +49,22 @@ func UserInfo(c *gin.Context) {
 	c.JSON(200, rsp)
 }
 
+func FriendsList(c *gin.Context) {
+	var req user.FriendsListRequest
+	var rsp user.FriendsListResponse
+	uid, _ := c.Get("uid")
+	req.UserId = uid.(int64)
+	err := client.UserClient.Call(context.Background(), "FriendsList", &req, &rsp)
+	if err != nil {
+		c.JSON(200, gin.H{
+			"code": 500,
+			"msg":  "服务调用失败",
+		})
+		return
+	}
+	c.JSON(200, rsp)
+}
+
 func SendMsg(c *gin.Context) {
 	client.ImClient.Auth("")
 }
