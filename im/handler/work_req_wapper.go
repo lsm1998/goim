@@ -1,12 +1,13 @@
 package handler
 
-import "strconv"
+import (
+	"utils"
+)
 
-func handshakeReq(body []byte) int64 {
-	int64, err := strconv.ParseInt(string(body), 10, 64)
+func handshakeReq(body []byte, uid int64) int64 {
+	_, err := utils.ValidToken(string(body), uid)
 	if err != nil {
-		return -1
-	} else {
-		return int64
+		return 0
 	}
+	return uid
 }

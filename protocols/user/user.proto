@@ -1,6 +1,16 @@
 syntax = "proto3";
 
 // protoc -I=. --go_out=. user.proto
+
+
+
+
+
+
+
+
+
+
 package user;
 
 message User{
@@ -11,9 +21,8 @@ message User{
 }
 
 message Friends{
-  int64 id = 1;
-  int64 group_id = 2;
-  repeated User list = 3;
+  int64 group_id = 1;
+  repeated User list = 2;
 }
 
 message UserInfoRequest{
@@ -22,7 +31,7 @@ message UserInfoRequest{
 
 message UserInfoResponse{
   int32 code = 1;
-  User user = 3;
+  User user = 2;
 }
 
 message UserListRequest{

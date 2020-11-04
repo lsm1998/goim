@@ -7,14 +7,12 @@ import (
 
 type friendsDetails struct {
 	model.User
-	FriendsId int64 `json:"friends_id" gorm:"friends_id"`
-	GroupId   int64 `json:"group_id" gorm:"group_id"`
+	GroupId int64 `json:"group_id" gorm:"group_id"`
 }
 
 type FriendsDetails struct {
-	FriendsId int64 `json:"friends_id" gorm:"friends_id"`
-	GroupId   int64 `json:"group_id" gorm:"group_id"`
-	List      []*model.User
+	GroupId int64 `json:"group_id" gorm:"group_id"`
+	List    []*model.User
 }
 
 func SaveFriends(friends *model.Friends) error {
@@ -23,7 +21,7 @@ func SaveFriends(friends *model.Friends) error {
 
 // QueryFriendsList 查询好友列表
 func QueryFriendsList(find *model.Friends) ([]*FriendsDetails, error) {
-	query := config.DB.Model((*model.User)(nil)).Select("t_friends.id as friends_id,t_friends.group_id,t_user.*").Joins("inner join t_friends on t_user.id=t_friends.friends_id")
+	query := config.DB.Model((*model.User)(nil)).Select("t_friends.group_id,t_user.*").Joins("inner join t_friends on t_user.id=t_friends.friends_id")
 	if find.Id > 0 {
 		query = query.Where("t_friends.id=?", find.Id)
 	}
@@ -52,9 +50,8 @@ func QueryFriendsList(find *model.Friends) ([]*FriendsDetails, error) {
 		} else {
 			m[v.GroupId] = []*model.User{&v.User}
 			result = append(result, &FriendsDetails{
-				FriendsId: v.FriendsId,
-				GroupId:   v.GroupId,
-				List:      m[v.FriendsId],
+				GroupId: v.GroupId,
+				List:    m[v.GroupId],
 			})
 		}
 	}

@@ -79,14 +79,4 @@ func newClient(address string) {
 			}
 		}
 	}
-
-	//wg.Add(11)
-	//for i := 0; i < 10; i++ {
-	//	conn.Write([]byte("hello"))
-	//	time.Sleep(1 * time.Second)
-	//	fmt.Println("发送一次")
-	//	wg.Done()
-	//}
-	//wg.Wait()
-	//conn.Close()
 }

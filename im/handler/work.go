@@ -22,7 +22,7 @@ func reactWork(bytes []byte, c gnet.Conn) {
 			route.SetPongTime(pack.Message.FormId)
 		case message.MessageType_Handshake: // 握手
 			var rsp message.Reply
-			if id := handshakeReq(pack.Message.Body); id > 0 {
+			if id := handshakeReq(pack.Message.Body, pack.Message.FormId); id > 0 {
 				aseKey, _ := logic.GetAndSaveAesKey(id)
 				route.Join(id, c, aseKey)
 				rsp.Code = 200

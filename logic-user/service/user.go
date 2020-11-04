@@ -55,7 +55,6 @@ func (i *UserRpcServer) FriendsList(ctx context.Context, req *user.FriendsListRe
 	rsp.List = make([]*user.Friends, 0, len(list))
 	for _, v := range list {
 		temp := &user.Friends{
-			Id:      v.FriendsId,
 			GroupId: v.GroupId,
 		}
 		temp.List = make([]*user.User, 0, len(v.List))

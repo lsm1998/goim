@@ -71,6 +71,7 @@ func (GroupItem) TableName() string {
 
 type Friends struct {
 	utils.Model
+	// 1好友，2关注，3黑名单，4特别关心
 	GroupId   int64 `json:"group_id" gorm:"group_id"`
 	UserId    int64 `json:"user_id" gorm:"user_id"`
 	FriendsId int64 `json:"friends_id" gorm:"friends_id"`
