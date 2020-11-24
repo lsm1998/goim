@@ -21,7 +21,7 @@ func Init() {
 func addRegistryPlugin(s *server.Server) {
 	r := &serverplugin.ConsulRegisterPlugin{
 		ServiceAddress: fmt.Sprintf(`tcp@:%d`, 11000),
-		ConsulServers:  []string{"47.103.211.234:8500"},
+		ConsulServers:  []string{"127.0.0.1:8500"},
 		BasePath:       "USER",
 		Metrics:        metrics.NewRegistry(),
 		UpdateInterval: time.Minute,
