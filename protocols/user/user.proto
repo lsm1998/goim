@@ -1,16 +1,6 @@
 syntax = "proto3";
 
 // protoc -I=. --go_out=. user.proto
-
-
-
-
-
-
-
-
-
-
 package user;
 
 message User{
