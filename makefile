@@ -1,9 +1,9 @@
 GO := go
 
-all: im-build user-build api-build file-build
+build: im-build user-build api-build file-build
 
 im-build:
-	cd im && $(GO) build
+	cd im-core && $(GO) build
 
 user-build:
 	cd logic-user && $(GO) build

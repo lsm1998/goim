@@ -14,6 +14,17 @@ import (
 
 func main() {
 	newClient(":9000")
+	//conn, err := net.Dial("tcp", "127.0.0.1:13")
+	//if err != nil {
+	//	panic(err)
+	//}
+	//temp := make([]byte, 1024*10)
+	//le, err := conn.Read(temp)
+	//if err != nil {
+	//	fmt.Println("连接退出，读取失败")
+	//	return
+	//}
+	//fmt.Println(string(temp[0:le]))
 }
 
 func newClient(address string) {
