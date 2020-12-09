@@ -4,6 +4,8 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
+	"im/model"
+	"utils"
 )
 
 var DB *gorm.DB
@@ -12,6 +14,8 @@ var C *Config
 
 type Config struct {
 	Mysql
+	Registry
+	Rpc
 }
 
 type Mysql struct {
@@ -21,14 +25,23 @@ type Mysql struct {
 	Db       string
 }
 
+type Registry struct {
+	Adders []string
+}
+
+type Rpc struct {
+	Port     uint
+	Server   string
+	Metadata string
+}
+
 func init() {
 	C = new(Config)
-	C.Mysql = Mysql{
-		Url:      "119.29.117.244:3306",
-		Db:       "im",
-		User:     "root",
-		Password: "fuck123",
+	err := utils.ScanConfig(C)
+	if err != nil {
+		panic(err)
 	}
+
 	// ---------Mysql--------
 	db, err := gorm.Open("mysql", fmt.Sprintf(`%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local`, C.User, C.Password, C.Url, C.Db))
 	if err != nil {
@@ -36,4 +49,8 @@ func init() {
 	}
 	DB = db
 	DB.LogMode(true)
+
+	utils.MigrateAuto(DB, []interface{}{
+		&model.Message{},
+	})
 }

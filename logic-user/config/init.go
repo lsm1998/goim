@@ -4,6 +4,8 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
+	"logic-user/model"
+	"utils"
 )
 
 var DB *gorm.DB
@@ -36,4 +38,14 @@ func init() {
 	}
 	DB = db
 	DB.LogMode(true)
+
+	utils.MigrateAuto(DB, []interface{}{
+		&model.Auth{},
+		&model.Permission{},
+		&model.Role{},
+		&model.User{},
+		&model.Group{},
+		&model.GroupItem{},
+		&model.Friends{},
+	})
 }

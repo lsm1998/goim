@@ -9,7 +9,7 @@ registry:
   adders: [ "127.0.0.1:8500" ]
 
 mysql:
-  url: 47.103.211.234:3306
+  url: 119.29.117.244:3306
   user: root
   password: fuck123
   db: im
