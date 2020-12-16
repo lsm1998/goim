@@ -25,10 +25,10 @@ func TestF(t *testing.T) {
 
 func TestS(t *testing.T) {
 	friends := model.Friends{}
-	friends.Id = 4
+	friends.Id = 1
 	friends.GroupId = 1
-	friends.UserId = 2
-	friends.FriendsId = 1
+	friends.UserId = 1
+	friends.FriendsId = 2
 	friends.CreateTime = time.Now()
 	friends.UpdateTime = time.Now()
 	fmt.Println(dao.SaveFriends(&friends))
