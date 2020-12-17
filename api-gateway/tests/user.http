@@ -1,13 +1,6 @@
 GET http://localhost:8888/base/info?id=99
 Accept: application/json
 
-{
-  "id": {{$uuid}},
-  "price": {{$randomInt}},
-  "ts": {{$timestamp}},
-  "value": "content"
-}
-
 ###
 
 POST http://localhost:8888/base/login
@@ -22,6 +15,6 @@ Accept: application/json
 
 GET http://localhost:8888/user/info?id=1
 Accept: application/json
-Content-Type: ontent-type: application/x-www-form-urlencoded; charset=UTF-8
+Content-Type: content-type: application/x-www-form-urlencoded; charset=UTF-8
 uid: 1
 token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOjEsIlJvbGUiOlsxLDIsM10sIkV4cGlyZVRpbWUiOjE2MDQxNjQwODV9.Vlj0F3k93UJnCPsoZWwPc6UvdSY-fvbb4aNzSyp7rVM

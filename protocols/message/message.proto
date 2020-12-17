@@ -29,19 +29,19 @@ enum MessageType {
 
 message Message{
   int64 id = 1;
-  MessageType cmd = 2;
-  int64 form_id = 3;
-  int64 to_id = 4;
-  int64 create_time = 5;
-  bytes body = 6;
-  int32 length = 7;
+  int64 form_id = 2;
+  int64 to_id = 3;
+  int64 create_time = 4;
+  bytes body = 5;
+  int32 length = 6;
 }
 
 message MessageRequest{
   RequestType type = 1;
+  MessageType cmd = 2;
   oneof pack {
-    Message message = 2;
-    Reply response = 3;
+    Message message = 3;
+    Reply response = 4;
   }
 }
 

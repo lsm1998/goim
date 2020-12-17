@@ -17,7 +17,7 @@ func reactWork(bytes []byte, c gnet.Conn) {
 	}
 	switch pack := req.Pack.(type) {
 	case *message.MessageRequest_Message:
-		switch pack.Message.Cmd {
+		switch req.Cmd {
 		case message.MessageType_Pong: // pong
 			route.SetPongTime(pack.Message.FormId)
 		case message.MessageType_Handshake: // 握手
@@ -30,7 +30,9 @@ func reactWork(bytes []byte, c gnet.Conn) {
 			} else {
 				rsp.Code = 201
 			}
-			_ = replyMessage(c, &rsp)
+			if err := replyMessage(c, &rsp); err != nil {
+				panic(err)
+			}
 		case message.MessageType_Online: // 上线
 		case message.MessageType_Offline: // 下线
 		case message.MessageType_File: // 文件传输

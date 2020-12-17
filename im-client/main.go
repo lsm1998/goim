@@ -58,11 +58,11 @@ func newClient(address string) {
 				req.Type = message.RequestType_Request
 				msg := new(message.Message)
 				if split[0] == "握手" || split[0] == "ws" {
-					msg.Cmd = message.MessageType_Handshake
+					req.Cmd = message.MessageType_Handshake
 					fmt.Println(split[2])
 					msg.Body = []byte(split[2])
 				} else if split[0] == "私信" || split[0] == "sx" {
-					msg.Cmd = message.MessageType_PrivateMessage
+					req.Cmd = message.MessageType_PrivateMessage
 					msg.ToId, err = strconv.ParseInt(split[1], 10, 64)
 					msg.Body = []byte(split[2])
 				} else {
