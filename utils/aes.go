@@ -7,6 +7,7 @@ import (
 	"encoding/base64"
 )
 
+// AesEncrypt 加密
 func AesEncrypt(orig string, key string) string {
 	// 转成字节数组
 	origData := []byte(orig)
@@ -27,6 +28,7 @@ func AesEncrypt(orig string, key string) string {
 	return base64.StdEncoding.EncodeToString(cryted)
 }
 
+// AesDecrypt 解密
 func AesDecrypt(body string, key string) string {
 	// 转成字节数组
 	bodyByte, _ := base64.StdEncoding.DecodeString(body)

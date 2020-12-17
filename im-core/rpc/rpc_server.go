@@ -5,6 +5,7 @@ import (
 	"github.com/rcrowley/go-metrics"
 	"github.com/smallnest/rpcx/server"
 	"github.com/smallnest/rpcx/serverplugin"
+	"im/config"
 	"time"
 )
 
@@ -14,15 +15,15 @@ func Init() {
 	server.UsePool = true
 	newServer := server.NewServer()
 	addRegistryPlugin(newServer)
-	_ = newServer.RegisterName("IM", new(ImRpcServer), "")
-	_ = newServer.Serve("tcp", fmt.Sprintf(`:%d`, 12000))
+	_ = newServer.RegisterName(config.C.Rpc.Server, new(ImRpcServer), config.C.Rpc.Metadata)
+	_ = newServer.Serve("tcp", fmt.Sprintf(`:%d`, config.C.Rpc.Port))
 }
 
 func addRegistryPlugin(s *server.Server) {
 	r := &serverplugin.ConsulRegisterPlugin{
-		ServiceAddress: fmt.Sprintf(`tcp@:%d`, 12000),
-		ConsulServers:  []string{"47.103.211.234:8500"},
-		BasePath:       "IM",
+		ServiceAddress: fmt.Sprintf(`tcp@:%d`, config.C.Rpc.Port),
+		ConsulServers:  config.C.Registry.Adders,
+		BasePath:       config.C.Rpc.Server,
 		Metrics:        metrics.NewRegistry(),
 		UpdateInterval: time.Minute,
 	}

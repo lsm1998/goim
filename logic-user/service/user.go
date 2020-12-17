@@ -18,11 +18,13 @@ func (i *UserRpcServer) Login(ctx context.Context, req *user.LoginRequest, rsp *
 		rsp.Code = 201
 		return nil
 	}
+	// 查询权限
 	roles, _ := dao.QueryRoles(loginUser.Id)
 	roleIds := make([]int64, 0, len(roles))
 	for _, v := range roles {
 		roleIds = append(roleIds, v.Id)
 	}
+	// 生成token
 	rsp.Token, _ = utils.GenerateToken(loginUser.Id, roleIds)
 	rsp.Code = 200
 	rsp.User = &user.User{Id: loginUser.Id, Username: loginUser.Username,
