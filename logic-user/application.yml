@@ -6,7 +6,7 @@ rpc:
   metadata:
 
 registry:
-  adders: [ "127.0.0.1:8500" ]
+  adders: [ "119.29.117.244:8500" ]
 
 mysql:
   url: 119.29.117.244:3306
