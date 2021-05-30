@@ -13,35 +13,29 @@ import (
 )
 
 var (
-	confPath  string
-	region    string
-	zone      string
-	deployEnv string
-	host      string
-	addrs     string
-	weight    int64
-	offline   bool
-	debug     bool
-
+	confPath string
+	host     string
+	offline  bool
+	debug    bool
 	// Conf config
 	Conf *Config
 )
 
 func init() {
 	var (
-		defHost, _    = os.Hostname()
-		defAddrs      = os.Getenv("ADDRS")
-		defWeight, _  = strconv.ParseInt(os.Getenv("WEIGHT"), 10, 32)
+		defHost, _ = os.Hostname()
+		//defAddrs      = os.Getenv("ADDRS")
+		//defWeight, _  = strconv.ParseInt(os.Getenv("WEIGHT"), 10, 32)
 		defOffline, _ = strconv.ParseBool(os.Getenv("OFFLINE"))
 		defDebug, _   = strconv.ParseBool(os.Getenv("DEBUG"))
 	)
 	flag.StringVar(&confPath, "conf", "comet-example.toml", "default config path.")
-	flag.StringVar(&region, "region", os.Getenv("REGION"), "avaliable region. or use REGION env variable, value: sh etc.")
-	flag.StringVar(&zone, "zone", os.Getenv("ZONE"), "avaliable zone. or use ZONE env variable, value: sh001/sh002 etc.")
-	flag.StringVar(&deployEnv, "deploy.env", os.Getenv("DEPLOY_ENV"), "deploy env. or use DEPLOY_ENV env variable, value: dev/fat1/uat/pre/prod etc.")
+	//flag.StringVar(&region, "region", os.Getenv("REGION"), "avaliable region. or use REGION env variable, value: sh etc.")
+	//flag.StringVar(&zone, "zone", os.Getenv("ZONE"), "avaliable zone. or use ZONE env variable, value: sh001/sh002 etc.")
+	//flag.StringVar(&deployEnv, "deploy.env", os.Getenv("DEPLOY_ENV"), "deploy env. or use DEPLOY_ENV env variable, value: dev/fat1/uat/pre/prod etc.")
 	flag.StringVar(&host, "host", defHost, "machine hostname. or use default machine hostname.")
-	flag.StringVar(&addrs, "addrs", defAddrs, "server public ip addrs. or use ADDRS env variable, value: 127.0.0.1 etc.")
-	flag.Int64Var(&weight, "weight", defWeight, "load balancing weight, or use WEIGHT env variable, value: 10 etc.")
+	//flag.StringVar(&addrs, "addrs", defAddrs, "server public ip addrs. or use ADDRS env variable, value: 127.0.0.1 etc.")
+	//flag.Int64Var(&weight, "weight", defWeight, "load balancing weight, or use WEIGHT env variable, value: 10 etc.")
 	flag.BoolVar(&offline, "offline", defOffline, "server offline. or use OFFLINE env variable, value: true/false etc.")
 	flag.BoolVar(&debug, "debug", defDebug, "server debug. or use DEBUG env variable, value: true/false etc.")
 }
@@ -57,8 +51,8 @@ func Init() (err error) {
 func Default() *Config {
 	return &Config{
 		Debug:     debug,
-		Env:       &Env{Region: region, Zone: zone, DeployEnv: deployEnv, Host: host, Weight: weight, Addrs: strings.Split(addrs, ","), Offline: offline},
-		Discovery: &naming.Config{Region: region, Zone: zone, Env: deployEnv, Host: host},
+		Env:       &Env{Region: "sh", Zone: "sh001", DeployEnv: "dev", Host: host, Weight: 10, Addrs: strings.Split("127.0.0.1", ","), Offline: offline},
+		Discovery: &naming.Config{Region: "sh", Zone: "sh001", Env: "dev", Host: host},
 		RPCClient: &RPCClient{
 			Dial:    xtime.Duration(time.Second),
 			Timeout: xtime.Duration(time.Second),

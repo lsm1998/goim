@@ -11,11 +11,8 @@ import (
 )
 
 var (
-	confPath  string
-	region    string
-	zone      string
-	deployEnv string
-	host      string
+	confPath string
+	host     string
 	// Conf config
 	Conf *Config
 )
@@ -25,9 +22,9 @@ func init() {
 		defHost, _ = os.Hostname()
 	)
 	flag.StringVar(&confPath, "conf", "job-example.toml", "default config path")
-	flag.StringVar(&region, "region", os.Getenv("REGION"), "avaliable region. or use REGION env variable, value: sh etc.")
-	flag.StringVar(&zone, "zone", os.Getenv("ZONE"), "avaliable zone. or use ZONE env variable, value: sh001/sh002 etc.")
-	flag.StringVar(&deployEnv, "deploy.env", os.Getenv("DEPLOY_ENV"), "deploy env. or use DEPLOY_ENV env variable, value: dev/fat1/uat/pre/prod etc.")
+	//flag.StringVar(&region, "region", os.Getenv("REGION"), "avaliable region. or use REGION env variable, value: sh etc.")
+	//flag.StringVar(&zone, "zone", os.Getenv("ZONE"), "avaliable zone. or use ZONE env variable, value: sh001/sh002 etc.")
+	//flag.StringVar(&deployEnv, "deploy.env", os.Getenv("DEPLOY_ENV"), "deploy env. or use DEPLOY_ENV env variable, value: dev/fat1/uat/pre/prod etc.")
 	flag.StringVar(&host, "host", defHost, "machine hostname. or use default machine hostname.")
 }
 
@@ -41,8 +38,8 @@ func Init() (err error) {
 // Default new a config with specified defualt value.
 func Default() *Config {
 	return &Config{
-		Env:       &Env{Region: region, Zone: zone, DeployEnv: deployEnv, Host: host},
-		Discovery: &naming.Config{Region: region, Zone: zone, Env: deployEnv, Host: host},
+		Env:       &Env{Region: "sh", Zone: "sh001", DeployEnv: "dev", Host: host},
+		Discovery: &naming.Config{Region: "sh", Zone: "sh001", Env: "dev", Host: host},
 		Comet:     &Comet{RoutineChan: 1024, RoutineSize: 32},
 		Room: &Room{
 			Batch:  20,
@@ -59,6 +56,13 @@ type Config struct {
 	Discovery *naming.Config
 	Comet     *Comet
 	Room      *Room
+	CometNode *CometNode
+}
+
+type CometNode struct {
+	Region    string
+	Zone      string
+	DeployEnv string
 }
 
 // Room is room config.

@@ -6,3 +6,10 @@
     topic = "goim-push-topic"
     group = "goim-push-group-job"
     brokers = ["119.29.117.244:9092"]
+
+[env]
+region = "sh"
+zone = "sh001"
+deployEnv = "dev"
+weight = 10
+addrs = ["127.0.0.1"]

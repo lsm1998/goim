@@ -29,7 +29,7 @@ const (
 	appid = "goim.comet"
 )
 
-// -conf=cmd/comet/comet-example.toml -region=sh -zone=sh001 -deploy.env=dev -weight=10 -addrs=127.0.0.1
+// -conf=cmd/comet-example.toml
 func main() {
 	flag.Parse()
 	if err := conf.Init(); err != nil {
@@ -37,7 +37,6 @@ func main() {
 	}
 	rand.Seed(time.Now().UTC().UnixNano())
 	runtime.GOMAXPROCS(runtime.NumCPU())
-	println(conf.Conf.Debug)
 	log.Infof("goim-comet [version: %s env: %+v] start", ver, conf.Conf.Env)
 	// register discovery
 	dis := naming.New(conf.Conf.Discovery)
