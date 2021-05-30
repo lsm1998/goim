@@ -1,0 +1,14 @@
+# 获取在线人数
+GET http://localhost:3111/goim/online/total
+Accept: application/json
+
+###
+
+GET http://localhost:3111/nodes/instances
+Accept: application/json
+
+###
+# 发送广播消息
+POST http://localhost:3111/goim/push/all?operation=1000&speed=10
+Accept: application/json
+
