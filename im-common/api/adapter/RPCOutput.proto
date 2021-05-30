@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option go_package = "adapter";
+
+package adapter;
+
+message RPCOutput {
+    int32 Ret        = 1;
+    bytes  Rsp = 2;
+    map<int32, string> Opt = 3;
+    string Desc        = 4;
+    string ServerName    = 5;
+    string Func     = 6;
+}

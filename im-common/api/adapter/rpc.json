@@ -1,0 +1,61 @@
+{
+  "options": {
+    "go_package": "adapter"
+  },
+  "nested": {
+    "adapter": {
+      "nested": {
+        "RPCInput": {
+          "fields": {
+            "ServerName": {
+              "type": "string",
+              "id": 1
+            },
+            "Func": {
+              "type": "string",
+              "id": 2
+            },
+            "Req": {
+              "type": "bytes",
+              "id": 3
+            },
+            "Opt": {
+              "keyType": "int32",
+              "type": "string",
+              "id": 4
+            }
+          }
+        },
+        "RPCOutput": {
+          "fields": {
+            "Ret": {
+              "type": "int32",
+              "id": 1
+            },
+            "Rsp": {
+              "type": "bytes",
+              "id": 2
+            },
+            "Opt": {
+              "keyType": "int32",
+              "type": "string",
+              "id": 3
+            },
+            "Desc": {
+              "type": "string",
+              "id": 4
+            },
+            "ServerName": {
+              "type": "string",
+              "id": 5
+            },
+            "Func": {
+              "type": "string",
+              "id": 6
+            }
+          }
+        }
+      }
+    }
+  }
+}
