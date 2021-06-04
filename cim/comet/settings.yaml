@@ -13,3 +13,6 @@ settings:
     path: ./logs/ # 日志保存路径
     level: debug # 日志级别
 
+  etcd:
+    adder:
+    port:

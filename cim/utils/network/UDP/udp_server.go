@@ -20,7 +20,9 @@ func (*udpNetworkServer) StopServer() {
 }
 
 func (t *udpNetworkServer) StartServer() {
-	_ = gnet.Serve(t, "udp://"+t.Addr, t.opts...)
+	if err := gnet.Serve(t, "udp://"+t.Addr, t.opts...); err != nil {
+		panic(err)
+	}
 }
 
 func NewUdpNetworkServer(addr string, opts ...gnet.Option) *udpNetworkServer {

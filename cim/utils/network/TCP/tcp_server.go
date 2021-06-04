@@ -20,7 +20,9 @@ func (*tcpNetworkServer) StopServer() {
 }
 
 func (t *tcpNetworkServer) StartServer() {
-	_ = gnet.Serve(t, "tcp://"+t.Addr, t.opts...)
+	if err := gnet.Serve(t, "tcp://"+t.Addr, t.opts...); err != nil {
+		panic(err)
+	}
 }
 
 func NewTcpNetworkServer(addr string, opts ...gnet.Option) *tcpNetworkServer {
