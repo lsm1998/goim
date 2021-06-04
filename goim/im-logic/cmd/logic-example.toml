@@ -51,7 +51,8 @@ brokers = ["119.29.117.244:9092"]
 
 [redis]
 network = "tcp"
-addr = "192.168.74.128:6379"
+addr = "119.29.117.244:6379"
+auth = "fuck123"
 active = 60000
 idle = 1024
 dialTimeout = "200ms"

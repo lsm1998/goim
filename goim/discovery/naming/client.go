@@ -294,10 +294,10 @@ func (d *Discovery) Register(ins *Instance) (cancelFunc context.CancelFunc, err 
 		return
 	}
 	ch := make(chan struct{}, 1)
-	cancelFunc = context.CancelFunc(func() {
+	cancelFunc = func() {
 		cancel()
 		<-ch
-	})
+	}
 	go func() {
 		ticker := time.NewTicker(_registerGap)
 		defer ticker.Stop()
