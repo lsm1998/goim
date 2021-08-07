@@ -1,0 +1,5 @@
+docker run --rm  -d --name etcd-browser \
+-p 8000:8000 \
+--env ETCD_HOST=119.91.113.111 \
+--env ETCD_PORT=12379 \
+buddho/etcd-browser

@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+// protoc -I route route/route.proto --go_out=plugins=grpc:route
+package route;
+
+service routeService{
+  rpc GetAddrList(GetAddrListReq) returns (GetAddrListReply){}
+
+  rpc GetAddr(GetAddrReq) returns (GetAddrReply){}
+}
+
+message GetAddrListReq{
+  string service_name = 1;
+}
+
+message GetAddrListReply{
+  int32 code = 1;
+  repeated string  addr = 2;
+}
+
+message GetAddrReq{
+  string service_name = 1;
+}
+
+message GetAddrReply{
+  int32 code = 1;
+  string  addr = 2;
+}

@@ -1,0 +1,34 @@
+version: '3'
+services:
+  etcd-node1:
+    image: "quay.io/coreos/etcd"
+    container_name: "etcd-node1"
+    ports:
+      - "12379:2379"
+      - "12380:2380"
+    command: 'etcd -name etcd-node1 -advertise-client-urls http://0.0.0.0:2379 -listen-client-urls http://0.0.0.0:2379 -listen-peer-urls http://0.0.0.0:2380 -initial-cluster-token etcd-cluster -initial-cluster "etcd-node1=http://etcd-node1:2380,etcd-node2=http://etcd-node2:2380,etcd-node3=http://etcd-node3:2380" -initial-cluster-state new'
+    networks:
+      - "etcd"
+
+  etcd-node2:
+    image: "quay.io/coreos/etcd"
+    container_name: "etcd-node2"
+    ports:
+      - "22379:2379"
+      - "22380:2380"
+    command: 'etcd -name etcd-node2 -advertise-client-urls http://0.0.0.0:2379 -listen-client-urls http://0.0.0.0:2379 -listen-peer-urls http://0.0.0.0:2380 -initial-cluster-token etcd-cluster -initial-cluster "etcd-node1=http://etcd-node1:2380,etcd-node2=http://etcd-node2:2380,etcd-node3=http://etcd-node3:2380" -initial-cluster-state new'
+    networks:
+      - "etcd"
+
+  etcd-node3:
+    image: "quay.io/coreos/etcd"
+    container_name: "etcd-node3"
+    ports:
+      - "32379:2379"
+      - "32380:2380"
+    command: 'etcd -name etcd-node3 -advertise-client-urls http://0.0.0.0:2379 -listen-client-urls http://0.0.0.0:2379 -listen-peer-urls http://0.0.0.0:2380 -initial-cluster-token etcd-cluster -initial-cluster "etcd-node1=http://etcd-node1:2380,etcd-node2=http://etcd-node2:2380,etcd-node3=http://etcd-node3:2380" -initial-cluster-state new'
+    networks:
+      - "etcd"
+
+networks:
+  etcd:

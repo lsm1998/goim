@@ -1,0 +1,17 @@
+// protoc -I proto proto/hello.proto --go_out=plugins=grpc:proto
+syntax = "proto3";
+
+package proto;
+
+service UserApi{
+  rpc SayHello (SayHelloReq) returns (SayHelloReply) {}
+}
+
+message SayHelloReq{
+  string name = 1;
+}
+
+message SayHelloReply{
+  int32 code = 1;
+  string  data = 2;
+}

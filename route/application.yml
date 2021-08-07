@@ -1,0 +1,14 @@
+version: 1.0
+
+rpc:
+  port: 12000
+  server: im-route
+  metadata:
+
+registry:
+  adders: [ "119.29.117.244:8500" ]
+
+redis:
+  adder: 119.29.117.244:3306
+  db: 0
+  auth: redisyyds123.
