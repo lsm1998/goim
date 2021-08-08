@@ -1,4 +1,4 @@
-package common
+package etcd
 
 import (
 	"context"
@@ -97,11 +97,11 @@ func (c *EtcdClient) Watch(serviceName string) error {
 				addr := strings.TrimPrefix(string(ev.Kv.Key), keyPrefix)
 				switch ev.Type {
 				case mvccpb.PUT:
-					if !c.exists(addrList, addr) {
+					if !exists(addrList, addr) {
 						c.registerMap[serviceName] = append(c.registerMap[serviceName], addr)
 					}
 				case mvccpb.DELETE:
-					if s, ok := c.remove(addrList, addr); ok {
+					if s, ok := remove(addrList, addr); ok {
 						c.registerMap[serviceName] = s
 					}
 				}
@@ -130,7 +130,7 @@ func (c *EtcdClient) AddrList(serviceName string) []string {
 
 // PeekLive 是否存活
 func (c *EtcdClient) PeekLive(serviceName, addr string) bool {
-	return c.exists(c.registerMap[serviceName], addr)
+	return exists(c.registerMap[serviceName], addr)
 }
 
 func (c *EtcdClient) initClient() error {
@@ -175,7 +175,7 @@ func (c *EtcdClient) keepAlive(serviceName, serverAddr string, ttl int64) error 
 	return nil
 }
 
-func (c *EtcdClient) exists(l []string, addr string) bool {
+func exists(l []string, addr string) bool {
 	for i := range l {
 		if l[i] == addr {
 			return true
@@ -184,7 +184,7 @@ func (c *EtcdClient) exists(l []string, addr string) bool {
 	return false
 }
 
-func (c *EtcdClient) remove(s []string, addr string) ([]string, bool) {
+func remove(s []string, addr string) ([]string, bool) {
 	for i := range s {
 		if s[i] == addr {
 			s[i] = s[len(s)-1]

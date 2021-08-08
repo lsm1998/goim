@@ -9,6 +9,10 @@ import (
 	"route/service"
 )
 
+/**
+route服务
+提供路由查询
+ */
 func main() {
 	host := fmt.Sprintf("127.0.0.1:%d", config.C.Rpc.Port)
 	listener, err := net.Listen("tcp", host)

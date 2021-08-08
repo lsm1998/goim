@@ -6,7 +6,7 @@ rpc:
   metadata:
 
 registry:
-  adders: [ "119.29.117.244:8500" ]
+  adders: [ "119.91.113.111:12379" ]
 
 redis:
   adder: 119.29.117.244:3306

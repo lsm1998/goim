@@ -1,15 +1,15 @@
 package config
 
 import (
-	"common"
+	"common/etcd"
 	"strings"
 )
 
-var EtcdClient *common.EtcdClient
+var EtcdClient *etcd.EtcdClient
 
 func initEtcd() {
 	var err error
-	EtcdClient, err = common.NewEtcdClient(strings.Join(C.Adders, ";"))
+	EtcdClient, err = etcd.NewEtcdClient(strings.Join(C.Adders, ";"))
 	if err != nil {
 		panic(err)
 	}

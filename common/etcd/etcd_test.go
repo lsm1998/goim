@@ -1,4 +1,4 @@
-package common
+package etcd
 
 import (
 	"fmt"
