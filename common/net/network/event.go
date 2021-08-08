@@ -11,7 +11,7 @@ const (
 )
 
 type NetWorkEvent interface {
-	Handler(data *[]byte, c gnet.Conn)
+	Handler(data []byte, c gnet.Conn)
 
 	EventType() NetWorkEventType
 }
@@ -22,7 +22,7 @@ func RegisterEventHandler(event ...NetWorkEvent) {
 	subscribe = append(subscribe, event...)
 }
 
-func EventNotify(typ NetWorkEventType, data *[]byte, c gnet.Conn) {
+func EventNotify(typ NetWorkEventType, data []byte, c gnet.Conn) {
 	for i := 0; i < len(subscribe); i++ {
 		if typ == subscribe[i].EventType() {
 			subscribe[i].Handler(data, c)

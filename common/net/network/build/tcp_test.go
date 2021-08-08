@@ -2,7 +2,7 @@ package build
 
 import (
 	"bytes"
-	"common/net"
+	commonNet "common/net"
 	"common/net/network"
 	"fmt"
 	"github.com/panjf2000/gnet"
@@ -19,7 +19,7 @@ type MyCodec struct {
 
 func (*MyCodec) Encode(c gnet.Conn, buf []byte) ([]byte, error) {
 	buffer := bytes.NewBuffer([]byte{})
-	buffer.Write(utils.Int32ToBytes(int32(len(buf))))
+	buffer.Write(commonNet.Int32ToBytes(int32(len(buf))))
 	buffer.Write(buf)
 	return buffer.Bytes(), nil
 }
@@ -29,7 +29,7 @@ func (*MyCodec) Decode(c gnet.Conn) ([]byte, error) {
 	if n < 4 {
 		return nil, nil
 	}
-	bodyLen := int(utils.BytesToInt32(buf))
+	bodyLen := int(commonNet.BytesToInt32(buf))
 	c.ShiftN(HeadSize)
 	dataLen, data := c.ReadN(bodyLen)
 	if dataLen < bodyLen {
@@ -42,9 +42,9 @@ func (*MyCodec) Decode(c gnet.Conn) ([]byte, error) {
 type echoDemo struct {
 }
 
-func (*echoDemo) Handler(data *[]byte, c gnet.Conn) {
-	fmt.Println(string(*data))
-	_ = c.AsyncWrite([]byte("echo:" + string(*data)))
+func (*echoDemo) Handler(data []byte, c gnet.Conn) {
+	fmt.Println(string(data))
+	_ = c.AsyncWrite([]byte("echo:" + string(data)))
 }
 
 func (*echoDemo) EventType() network.NetWorkEventType {
@@ -76,7 +76,7 @@ func TestClient(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		b := []byte("hello")
 		buffer := bytes.NewBuffer([]byte{})
-		buffer.Write(utils.Int32ToBytes(int32(len(b))))
+		buffer.Write(commonNet.Int32ToBytes(int32(len(b))))
 		buffer.Write(b)
 		_, err = conn.Write(buffer.Bytes())
 		assert.NoError(t, err)

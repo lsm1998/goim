@@ -8,7 +8,7 @@ import (
 type CloseHandler struct {
 }
 
-func (*CloseHandler) Handler(data *[]byte, c gnet.Conn) {
+func (*CloseHandler) Handler(data []byte, c gnet.Conn) {
 	connMaps.LeaveByConn(c)
 }
 

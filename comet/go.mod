@@ -14,5 +14,6 @@ require (
 	common v0.0.0-00010101000000-000000000000
 	github.com/garyburd/redigo v1.6.2
 	github.com/panjf2000/gnet v1.5.3
+	protocols v0.0.0-00010101000000-000000000000
 	utils v0.0.0-00010101000000-000000000000
 )
