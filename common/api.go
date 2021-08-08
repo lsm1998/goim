@@ -6,8 +6,6 @@ import (
 	"net/http"
 )
 
-var Default = &response{}
-
 type Api struct {
 	Context *gin.Context
 	Errors  error
@@ -23,7 +21,7 @@ func (e *Api) AddError(err error) {
 
 // Error 通常错误数据处理
 func (e Api) Error(code int, err error, msg string) {
-	Error(e.Context, code, err, msg)
+	Error(e.Context, code, msg)
 }
 
 // OK 通常成功数据处理
@@ -32,31 +30,18 @@ func (e Api) OK(data interface{}, msg string) {
 }
 
 // Error 失败数据处理
-func Error(c *gin.Context, code int, err error, msg string) {
-	res := Default.Clone()
-	if err != nil {
-		res.SetMsg(err.Error())
-	}
-	if msg != "" {
-		res.SetMsg(msg)
-	}
-	res.SetCode(int32(code))
-	res.SetSuccess(false)
-	c.Set("result", res)
-	c.Set("status", code)
-	c.AbortWithStatusJSON(http.StatusOK, res)
+func Error(c *gin.Context, code int, msg string) {
+	result := map[string]interface{}{}
+	result["code"] = code
+	result["msg"] = msg
+	c.AbortWithStatusJSON(http.StatusOK, result)
 }
 
 // OK 通常成功数据处理
 func OK(c *gin.Context, data interface{}, msg string) {
-	res := Default.Clone()
-	res.SetData(data)
-	res.SetSuccess(true)
-	if msg != "" {
-		res.SetMsg(msg)
-	}
-	res.SetCode(http.StatusOK)
-	c.Set("result", res)
-	c.Set("status", http.StatusOK)
-	c.AbortWithStatusJSON(http.StatusOK, res)
+	result := map[string]interface{}{}
+	result["code"] = http.StatusOK
+	result["msg"] = msg
+	result["data"] = data
+	c.AbortWithStatusJSON(http.StatusOK, result)
 }

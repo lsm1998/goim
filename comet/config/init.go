@@ -6,26 +6,24 @@ var C *Config
 
 type Config struct {
 	Registry
-	Client
-	Http
+	Server
 	Nsq
 	Redis
-}
-
-type Nsq struct {
-	Host string
-}
-
-type Http struct {
-	Port uint16
 }
 
 type Registry struct {
 	Adders []string
 }
 
-type Client struct {
-	Servers []string
+type Nsq struct {
+	Host string
+}
+
+type Server struct {
+	Port      uint16
+	Name      string
+	Zone      uint8
+	Multicore bool
 }
 
 type Redis struct {
@@ -39,4 +37,6 @@ func init() {
 	if err := utils.ScanConfig(C); err != nil {
 		panic(err)
 	}
+	initEtcd()
+	initRedis()
 }

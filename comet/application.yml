@@ -1,16 +1,16 @@
 version: 1.0
 
-http:
-  port: 8000
-
-client:
-  servers: [ "im-route" ]
-
-nsq:
-  host: "119.91.113.111:4161"
+server:
+  port: 14000
+  name: im-comet
+  zone: 1
+  multicore: true
 
 registry:
   adders: [ "119.91.113.111:12379" ]
+
+nsq:
+  host: "119.91.113.111:4161"
 
 redis:
   adder: 119.29.117.244:3306

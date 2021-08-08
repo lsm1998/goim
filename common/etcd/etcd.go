@@ -35,6 +35,15 @@ func NewEtcdClient(etcdAddr string) (*EtcdClient, error) {
 	}, nil
 }
 
+// RegisterAndWatch Register & Watch
+func (c *EtcdClient) RegisterAndWatch(serviceName, serverAddr string) error {
+	if err := c.Register(serviceName, serverAddr); err != nil {
+		return err
+	}
+	go c.Watch(serviceName)
+	return nil
+}
+
 // Register 注册服务
 func (c *EtcdClient) Register(serviceName, serverAddr string) error {
 	c.mutex.Lock()

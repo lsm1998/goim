@@ -6,10 +6,10 @@ import (
 )
 
 func InitCometRoute(r *gin.RouterGroup) {
-	r.Group("/comet")
+	group := r.Group("/comet")
 	{
 		c := &comet.Comet{}
-		r.GET("/addrList", c.AddrList)
-		r.GET("/addr", c.Addr)
+		group.GET("/addrList", c.AddrList)
+		group.GET("/addr", c.Addr)
 	}
 }

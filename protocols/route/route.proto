@@ -15,7 +15,7 @@ message GetAddrListReq{
 
 message GetAddrListReply{
   int32 code = 1;
-  repeated string  addr = 2;
+  repeated string  addr_list = 2;
 }
 
 message GetAddrReq{

@@ -29,7 +29,7 @@ func main() {
 	proto.RegisterRouteServiceServer(srv, service.NewRouteServer())
 
 	// 将服务地址注册到etcd中
-	err = config.EtcdClient.Register(config.C.Rpc.Server, host)
+	err = config.EtcdClient.RegisterAndWatch(config.C.Rpc.Server, host)
 	if err != nil {
 		panic(err)
 	}
