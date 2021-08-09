@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"comet/handler/route"
 	"common/net/network"
 	"github.com/panjf2000/gnet"
 )
@@ -9,7 +10,7 @@ type CloseHandler struct {
 }
 
 func (*CloseHandler) Handler(data []byte, c gnet.Conn) {
-	connMaps.LeaveByConn(c)
+	route.connMaps.LeaveByConn(c)
 }
 
 func (*CloseHandler) EventType() network.NetWorkEventType {

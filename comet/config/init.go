@@ -16,7 +16,9 @@ type Registry struct {
 }
 
 type Nsq struct {
-	Host string
+	Host    string
+	Topic   string
+	Channel string
 }
 
 type Server struct {

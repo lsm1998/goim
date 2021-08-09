@@ -5,6 +5,7 @@ import (
 	"comet/handler"
 	"common/net/network"
 	"common/net/network/build"
+	"common/nsq"
 	"fmt"
 	"github.com/panjf2000/gnet"
 )
@@ -17,6 +18,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	go func() {
+		err = nsq.RegisterMQHandler(config.C.Nsq.Host, config.C.Nsq.Topic, config.C.Nsq.Channel, new(handler.MessageConsumer))
+		if err != nil {
+			panic(err)
+		}
+	}()
 
 	network.RegisterEventHandler(new(handler.ReactHandler), new(handler.CloseHandler))
 
@@ -34,5 +42,6 @@ func main() {
 		Build()
 	netServer.InitServer()
 	netServer.StartServer()
+	defer nsq.Shutdown()
 	defer netServer.StopServer()
 }

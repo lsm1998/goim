@@ -48,5 +48,6 @@ message MessageRequest{
 message Reply{
   int32 code = 1;
   int64 msg_id = 2;
-  bytes body = 3;
+  int64 form_id = 3;
+  bytes body = 4;
 }
