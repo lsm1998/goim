@@ -20,3 +20,7 @@ func Join(uid int64, c gnet.Conn) error {
 	// 用户上线
 	return nil
 }
+
+func Foreach(f func(c gnet.Conn)) {
+	connMaps.Foreach(f)
+}

@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"comet/handler/strategy"
 	"common/net/network"
 	protobuf "github.com/golang/protobuf/proto"
 	"github.com/panjf2000/gnet"
@@ -36,24 +35,9 @@ func (*ReactHandler) Handler(data []byte, c gnet.Conn) {
 		log.Error("msg.Pack type not support")
 		return
 	}
-
 }
 
-func processorMessage(cmd proto.MessageType, message *proto.MessageRequest_Message, c gnet.Conn) {
-	s, ok := strategy.StrategyMap[cmd]
-	if !ok {
-		log.Error("strategy type not support")
-		return
-	}
-	err := strategy.NewMsgHandler(message.Message, c, s)
-	if err != nil {
-		log.Error(err)
-	}
-}
 
-func processorResponse(cmd proto.MessageType, response *proto.MessageRequest_Response, c gnet.Conn) {
-
-}
 
 func (*ReactHandler) EventType() network.NetWorkEventType {
 	return network.NetWorkEventReact

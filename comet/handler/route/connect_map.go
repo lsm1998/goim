@@ -8,11 +8,9 @@ import (
 
 const blockSize = 64
 
-type ConnMaps []map[int64]*connContent
+type ConnMaps []sync.Map
 
 var connMaps ConnMaps
-
-var mutexGroup []*sync.Mutex
 
 type connContent struct {
 	c        gnet.Conn
@@ -20,59 +18,54 @@ type connContent struct {
 }
 
 func init() {
-	mutexGroup = make([]*sync.Mutex, blockSize)
-	connMaps = make([]map[int64]*connContent, blockSize)
+	connMaps = make([]sync.Map, blockSize)
 	for i := 0; i < blockSize; i++ {
-		mutexGroup[i] = &sync.Mutex{}
-		connMaps[i] = make(map[int64]*connContent)
+		connMaps[i] = sync.Map{}
 	}
 }
 
 func (m *ConnMaps) Join(uid int64, c gnet.Conn) {
-	index := uid % blockSize
-	mutex := mutexGroup[index]
-	mutex.Lock()
-	defer mutex.Unlock()
-	connMaps[index][uid] = &connContent{c: c, lastTime: time.Now().Unix()}
+	connMaps[uid%blockSize].Store(uid, &connContent{c: c, lastTime: time.Now().Unix()})
 }
 
 func (m *ConnMaps) Leave(uid int64) {
-	index := uid % blockSize
-	mutex := mutexGroup[index]
-	mutex.Lock()
-	defer mutex.Unlock()
-	delete(connMaps[index], uid)
+	connMaps[uid%blockSize].Delete(uid)
 }
 
 func (m *ConnMaps) GetConn(uid int64) gnet.Conn {
-	content := connMaps[uid%blockSize][uid]
-	if content == nil {
+	load, ok := connMaps[uid%blockSize].Load(uid)
+	if !ok {
 		return nil
 	}
-	return content.c
+	return load.(*connContent).c
 }
 
 func (m *ConnMaps) LeaveByConn(c gnet.Conn) {
 	for i := 0; i < blockSize; i++ {
-		m2 := connMaps[i]
-		for k := range m2 {
-			if m2[k].c == c {
-				m.Leave(k)
-				return
+		connMaps[i].Range(func(key, value interface{}) bool {
+			if value.(*connContent).c == c {
+				connMaps[i].Delete(key)
+				return false
 			}
-		}
+			return true
+		})
 	}
 }
 
 func (m *ConnMaps) setPong(uid int64) bool {
-	index := uid % blockSize
-	mutex := mutexGroup[index]
-	mutex.Lock()
-	defer mutex.Unlock()
-	content := connMaps[uid%blockSize][uid]
-	if content == nil {
+	content, ok := connMaps[uid%blockSize].Load(uid)
+	if !ok {
 		return false
 	}
-	content.lastTime = time.Now().Unix()
+	content.(*connContent).lastTime = time.Now().Unix()
 	return true
+}
+
+func (m *ConnMaps) Foreach(f func(c gnet.Conn)) {
+	for i := 0; i < blockSize; i++ {
+		connMaps[i].Range(func(key, value interface{}) bool {
+			f(value.(*connContent).c)
+			return true
+		})
+	}
 }

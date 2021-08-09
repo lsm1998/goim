@@ -1,7 +1,9 @@
 package strategy
 
 import (
+	"comet/handler/route"
 	"github.com/panjf2000/gnet"
+	"github.com/prometheus/common/log"
 	proto "protocols/message"
 )
 
@@ -15,5 +17,10 @@ func (p *Broadcast) Handler(msg *proto.Message, c gnet.Conn) error {
 		FormId: msg.FormId,
 		MsgId:  0,
 	})
-	return c.AsyncWrite(data)
+	route.Foreach(func(c gnet.Conn) {
+		if err := c.AsyncWrite(data); err != nil {
+			log.Error(err)
+		}
+	})
+	return nil
 }
