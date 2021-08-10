@@ -67,6 +67,6 @@ func (w *wsNetworkServer) listen(ws *WSConn) {
 			network.EventNotify(network.NetWorkEventClose, nil, ws)
 			break
 		}
-		network.EventNotify(network.NetWorkEventReact, &data, ws)
+		network.EventNotify(network.NetWorkEventReact, data, ws)
 	}
 }

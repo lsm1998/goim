@@ -10,10 +10,19 @@ type Config struct {
 	Http
 	Nsq
 	Redis
+	Mysql
+}
+
+type Mysql struct {
+	Host     string
+	User     string
+	Password string
+	DB       string `json:"db" yaml:"db"`
 }
 
 type Nsq struct {
-	Host string
+	Host           string
+	BroadcastTopic string `json:"broadcast_topic" yaml:"broadcast_topic"`
 }
 
 type Http struct {
@@ -39,4 +48,5 @@ func init() {
 	if err := utils.ScanConfig(C); err != nil {
 		panic(err)
 	}
+	initOrm()
 }

@@ -6,9 +6,9 @@ import (
 )
 
 func InitMessageRoute(r *gin.RouterGroup) {
-	r.Group("/push")
+	group := r.Group("/push")
 	{
-		m := &message.Message{}
-		r.GET("/broadcast", m.Broadcast)
+		m := message.NewMessage()
+		group.GET("/broadcast", m.Broadcast)
 	}
 }

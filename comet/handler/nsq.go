@@ -13,7 +13,11 @@ func (*MessageConsumer) HandleMessage(msg *nsq.Message) error {
 	if err != nil {
 		return err
 	}
-	processorMessage(req.Cmd, req.Pack.(*proto.MessageRequest_Message), nil)
+	if req.Cmd == proto.MessageType_SystemBroadcast || req.Cmd == proto.MessageType_PrivateMessage {
+		processorMessage(req.Cmd, req.Pack.(*proto.MessageRequest_Message), nil)
+	} else {
+
+	}
 	msg.Finish()
 	return nil
 }

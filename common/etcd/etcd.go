@@ -40,8 +40,7 @@ func (c *EtcdClient) RegisterAndWatch(serviceName, serverAddr string) error {
 	if err := c.Register(serviceName, serverAddr); err != nil {
 		return err
 	}
-	go c.Watch(serviceName)
-	return nil
+	return c.Watch(serviceName)
 }
 
 // Register 注册服务

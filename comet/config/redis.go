@@ -18,10 +18,16 @@ func initRedis() {
 				return nil, err
 			}
 			if C.Redis.Auth != "" {
-				c.Do("auth", C.Redis.Auth)
+				if _, err = c.Do("auth", C.Redis.Auth); err != nil {
+					return nil, err
+				}
 			}
-			c.Do("SELECT", C.Redis.Db)
-			return c, nil
+			_, err = c.Do("select", C.Redis.Db)
+			return c, err
 		},
 	}
+}
+
+func GetRedis() redis.Conn {
+	return RedisClient.Get()
 }

@@ -16,9 +16,9 @@ type Registry struct {
 }
 
 type Nsq struct {
-	Host    string
-	Topic   string
-	Channel string
+	Host           string
+	Topic          string
+	BroadcastTopic string `json:"broadcast_topic" yaml:"broadcast_topic"`
 }
 
 type Server struct {

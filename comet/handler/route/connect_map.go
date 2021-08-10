@@ -41,14 +41,19 @@ func (m *ConnMaps) GetConn(uid int64) gnet.Conn {
 }
 
 func (m *ConnMaps) LeaveByConn(c gnet.Conn) {
+	var flag bool
 	for i := 0; i < blockSize; i++ {
 		connMaps[i].Range(func(key, value interface{}) bool {
 			if value.(*connContent).c == c {
+				flag = true
 				connMaps[i].Delete(key)
 				return false
 			}
 			return true
 		})
+		if flag {
+			break
+		}
 	}
 }
 
@@ -61,10 +66,10 @@ func (m *ConnMaps) setPong(uid int64) bool {
 	return true
 }
 
-func (m *ConnMaps) Foreach(f func(c gnet.Conn)) {
+func (m *ConnMaps) Foreach(f func(uid int64, c gnet.Conn)) {
 	for i := 0; i < blockSize; i++ {
 		connMaps[i].Range(func(key, value interface{}) bool {
-			f(value.(*connContent).c)
+			f(key.(int64), value.(*connContent).c)
 			return true
 		})
 	}

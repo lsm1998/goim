@@ -21,6 +21,10 @@ func Join(uid int64, c gnet.Conn) error {
 	return nil
 }
 
-func Foreach(f func(c gnet.Conn)) {
+func Foreach(f func(uid int64, c gnet.Conn)) {
 	connMaps.Foreach(f)
+}
+
+func LeaveByConn(c gnet.Conn) {
+	connMaps.LeaveByConn(c)
 }

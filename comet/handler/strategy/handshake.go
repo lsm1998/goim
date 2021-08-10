@@ -1,6 +1,7 @@
 package strategy
 
 import (
+	"comet/config"
 	"comet/handler/route"
 	"github.com/panjf2000/gnet"
 	"github.com/spf13/cast"
@@ -20,6 +21,14 @@ func (p *Handshake) Handler(msg *proto.Message, c gnet.Conn) error {
 		return c.AsyncWrite(createFailResponse(proto.MessageType_Handshake, 500, "用户ID错误"))
 	}
 	if err := route.Join(uid, c); err != nil {
+		return c.AsyncWrite(createFailResponse(proto.MessageType_Handshake, 500, err.Error()))
+	}
+	// 上线
+	conn := config.GetRedis()
+
+	key := "im-server-" + cast.ToString(config.C.Zone)
+	_, err := conn.Do("hadd", key, uid)
+	if err != nil {
 		return c.AsyncWrite(createFailResponse(proto.MessageType_Handshake, 500, err.Error()))
 	}
 	return c.AsyncWrite(handshakeOk)

@@ -10,7 +10,7 @@ type CloseHandler struct {
 }
 
 func (*CloseHandler) Handler(data []byte, c gnet.Conn) {
-	route.connMaps.LeaveByConn(c)
+	route.LeaveByConn(c)
 }
 
 func (*CloseHandler) EventType() network.NetWorkEventType {

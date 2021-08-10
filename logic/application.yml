@@ -6,13 +6,20 @@ http:
 client:
   servers: [ "im-route" ]
 
+mysql:
+  host: "119.91.113.111:3306"
+  user: "root"
+  password: "mysqlyyds123"
+  db: "im"
+
 nsq:
-  host: "119.91.113.111:4161"
+  host: "119.91.113.111:4150"
+  broadcast_topic: "im-msg-broadcast"
 
 registry:
-  adders: [ "119.91.113.111:12379" ]
+  adders: [ "119.91.113.111:12379","119.91.113.111:22379","119.91.113.111:32379" ]
 
 redis:
-  adder: 119.29.117.244:3306
+  adder: "119.29.117.244:3306"
   db: 0
-  auth: redisyyds123.
+  auth: "redisyyds123"

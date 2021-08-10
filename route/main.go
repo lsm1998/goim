@@ -12,7 +12,7 @@ import (
 /**
 route服务
 提供路由查询
- */
+*/
 func main() {
 	host := fmt.Sprintf("127.0.0.1:%d", config.C.Rpc.Port)
 	listener, err := net.Listen("tcp", host)
@@ -29,11 +29,14 @@ func main() {
 	proto.RegisterRouteServiceServer(srv, service.NewRouteServer())
 
 	// 将服务地址注册到etcd中
-	err = config.EtcdClient.RegisterAndWatch(config.C.Rpc.Server, host)
+	err = config.EtcdClient.Register(config.C.Rpc.Server, host)
 	if err != nil {
 		panic(err)
 	}
-
+	// 监听comet服务
+	if err = config.EtcdClient.Watch("im-comet"); err != nil {
+		panic(err)
+	}
 	// 监听服务
 	if err = srv.Serve(listener); err != nil {
 		panic(err)

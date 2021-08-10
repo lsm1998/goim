@@ -2,17 +2,19 @@ version: 1.0
 
 server:
   port: 14000
-  name: im-comet
+  name: "im-comet"
   zone: 1
   multicore: true
 
 registry:
-  adders: [ "119.91.113.111:12379" ]
+  adders: [ "119.91.113.111:12379","119.91.113.111:22379","119.91.113.111:32379" ]
 
 nsq:
-  host: "119.91.113.111:4161"
+  host: "119.91.113.111:4150"
+  broadcast_topic: "im-msg-broadcast"
+  topic: "im-msg-private"
 
 redis:
-  adder: 119.29.117.244:3306
+  adder: "119.91.113.111:6379"
   db: 0
-  auth: redisyyds123.
+  auth: "redisyyds123"

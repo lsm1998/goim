@@ -9,7 +9,7 @@ type EventPublisher struct {
 }
 
 func (*EventPublisher) React(frame []byte, c gnet.Conn) (out []byte, action gnet.Action) {
-	EventNotify(NetWorkEventReact, &frame, c)
+	EventNotify(NetWorkEventReact, frame, c)
 	return
 }
 
