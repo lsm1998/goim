@@ -1,6 +1,9 @@
 package message
 
+import "gorm.io/gorm"
+
 type Group struct {
+	gorm.Model
 }
 
 func (*Group) TableName() string {
@@ -8,6 +11,7 @@ func (*Group) TableName() string {
 }
 
 type GroupAdmin struct {
+	gorm.Model
 }
 
 func (*GroupAdmin) TableName() string {
