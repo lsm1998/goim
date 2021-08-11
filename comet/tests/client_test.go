@@ -5,6 +5,7 @@ import (
 	commonNet "common/net"
 	"context"
 	"encoding/json"
+	"fmt"
 	protobuf "github.com/golang/protobuf/proto"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
@@ -46,12 +47,28 @@ func TestClient(t *testing.T) {
 	reader := bufio.NewReader(conn)
 	go func() {
 		for {
-			bytes, err = reader.ReadSlice(4)
+			b := make([]byte, 0, 4)
+			_, err = reader.Read(b)
 			assert.Nil(t, err)
-			commonNet.BytesToInt32(bytes)
+			b = make([]byte, 0, commonNet.BytesToInt32(b))
+			_, err = reader.Read(b)
 			assert.Nil(t, err)
+			handlerRecData(b)
 		}
 	}()
+	b, err := getHandshakeData()
+	assert.Nil(t, err)
+	conn.Write(b)
+}
+
+func handlerRecData(b []byte) error {
+	request := &proto.MessageRequest{}
+	err := protobuf.Unmarshal(b, request)
+	if err != nil {
+		return err
+	}
+	fmt.Println("Pack=", request.Pack)
+	return nil
 }
 
 func getHandshakeData() ([]byte, error) {
